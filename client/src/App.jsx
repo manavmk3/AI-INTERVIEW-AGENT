@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './pages/home'
 import Auth from './pages/Auth'
 
-export const ServerUrl = "http://localhost:6000"
+export const ServerUrl = "http://localhost:8000"
 
 function App() {
   return (
