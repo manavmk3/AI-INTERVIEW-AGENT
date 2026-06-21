@@ -3,7 +3,42 @@ import { BsRobot } from "react-icons/bs";
 import { IoSparkles } from "react-icons/io5";
 import { motion } from "motion/react"
 import { FcGoogle } from "react-icons/fc";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ServerUrl } from "../App";
+
 function Auth() {
+    const navigate = useNavigate();
+    const [isLoggingIn, setIsLoggingIn] = React.useState(false);
+
+    const handleGoogleAuth = async () => {
+        setIsLoggingIn(true);
+        if (!auth || !provider) {
+            console.warn("Firebase not configured. Simulating Google Login...");
+            setTimeout(() => {
+                setIsLoggingIn(false);
+                navigate("/");
+            }, 1000);
+            return;
+        }
+        try {
+            const response = await signInWithPopup(auth, provider)
+            let User = response.user
+            let name = User.displayName
+            let email = User.email
+            const result = await axios.post(ServerUrl + "/api/auth/google", { name, email }, { withCredentials: true })
+            console.log(result.data)
+            setIsLoggingIn(false);
+            navigate("/");
+        }
+        catch (error) {
+            console.error("Google sign in error:", error);
+            setIsLoggingIn(false);
+        }
+    }
+
     return (
         <div className='w-full min-h-screen bg-[#f3f3f3] flex items-center justify-center px-6 py-20'>
             <motion.div
@@ -29,11 +64,19 @@ function Auth() {
                     detailed performance insights.
                 </p>
                 <motion.button
-                    whileHover={{ opacity: 0.9, scale: 1.03 }}
-                    whileTap={{ opacity: 1, scale: 0.98 }}
-                    className='w-full flex items-center justify-center gap-3 py-3 bg-black text-white rounded-full shadow-md'>
-                    <FcGoogle size={20} />
-                    Continue with Google
+                    onClick={handleGoogleAuth}
+                    disabled={isLoggingIn}
+                    whileHover={isLoggingIn ? {} : { opacity: 0.9, scale: 1.03 }}
+                    whileTap={isLoggingIn ? {} : { opacity: 1, scale: 0.98 }}
+                    className={`w-full flex items-center justify-center gap-3 py-3 bg-black text-white rounded-full shadow-md transition-all ${isLoggingIn ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                    {isLoggingIn ? (
+                        <span>Connecting...</span>
+                    ) : (
+                        <>
+                            <FcGoogle size={20} />
+                            Continue with Google
+                        </>
+                    )}
                 </motion.button>
             </motion.div>
         </div>
@@ -41,4 +84,3 @@ function Auth() {
 }
 
 export default Auth
-
