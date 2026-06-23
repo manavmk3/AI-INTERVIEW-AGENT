@@ -8,8 +8,12 @@ import { auth, provider } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ServerUrl } from "../App";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/userSlice";
 
-function Auth() {
+function Auth({ isModel = false }) {
+    const dispatch = useDispatch()
+
     const navigate = useNavigate();
     const [isLoggingIn, setIsLoggingIn] = React.useState(false);
 
@@ -30,17 +34,19 @@ function Auth() {
             let email = User.email
             const result = await axios.post(ServerUrl + "/api/auth/google", { name, email }, { withCredentials: true })
             console.log(result.data)
+            dispatch(setUserData(result.data))
             setIsLoggingIn(false);
             navigate("/");
         }
         catch (error) {
             console.error("Google sign in error:", error);
             setIsLoggingIn(false);
+            dispatch(setUserData(null))
         }
     }
 
     return (
-        <div className='w-full min-h-screen bg-[#f3f3f3] flex items-center justify-center px-6 py-20'>
+        <div className={isModel ? "" : "w-full min-h-screen bg-[#f3f3f3] flex items-center justify-center px-6 py-20"}>
             <motion.div
                 initial={{ opacity: 0, y: -40 }}
                 animate={{ opacity: 1, y: 0 }}
