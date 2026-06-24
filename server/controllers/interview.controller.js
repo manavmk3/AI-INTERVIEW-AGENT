@@ -5,7 +5,9 @@ import { askAi } from "../services/openRouter.service.js"
 
 export const analyzeResume = async (req, res) => {
     try {
+        console.log("analyzeResume called. File:", req.file)
         if (!req.file) {
+            console.log("analyzeResume: No file received in request")
             return res.status(400).json({ message: "Resume required " });
         }
         const filepath = req.file.path
@@ -30,9 +32,9 @@ export const analyzeResume = async (req, res) => {
             {
                 role: "system",
                 content: `
-    Extract structured data from resume.
+    Extract structured data from the resume. Make sure to extract ALL projects and ALL skills listed or described in the resume. Do not omit any projects or skills.
 
-    Return strictly JSON:
+    Return strictly JSON format:
 
     {
         "role": "string",
@@ -47,7 +49,9 @@ export const analyzeResume = async (req, res) => {
                 content: resumeText
             }
         ];
+        console.log("Extracted Resume Text:", resumeText);
         const aiResponse = await askAi(messages);
+        console.log("Raw AI Response:", aiResponse);
         const parsed = JSON.parse(aiResponse);
         fs.unlinkSync(filepath)
 

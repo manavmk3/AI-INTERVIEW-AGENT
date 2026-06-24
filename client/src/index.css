@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+/* Responsive height scaling for Step1Setup */
+@media (max-height: 860px) {
+    .setup-container {
+        padding: 1.5rem !important;
+        /* p-6 instead of p-12 */
+    }
+
+    .setup-title {
+        font-size: 1.5rem !important;
+        /* text-2xl instead of text-3xl */
+        margin-bottom: 1rem !important;
+        /* mb-4 instead of mb-8 */
+    }
+
+    .setup-space> :not([hidden])~ :not([hidden]) {
+        margin-top: 0.85rem !important;
+        /* space-y-3.5 instead of space-y-6 */
+    }
+
+    .setup-input {
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+        /* py-2 instead of py-3 */
+    }
+
+    .setup-icon {
+        top: 0.75rem !important;
+        /* top-3 instead of top-4 */
+    }
+
+    .setup-result {
+        padding: 0.85rem !important;
+        /* p-3.5 instead of p-5 */
+        gap: 0.5rem !important;
+        /* space-y-2 instead of space-y-4 */
+    }
+
+    .setup-button {
+        padding-top: 0.55rem !important;
+        padding-bottom: 0.55rem !important;
+        /* py-2.2 instead of py-3 */
+        font-size: 0.95rem !important;
+        /* text-md instead of text-lg */
+    }
+}

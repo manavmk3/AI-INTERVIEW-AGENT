@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser"
 import cors from "cors"
 import authRouter from "./routes/auth.route.js"
 import userRouter from "./routes/user.route.js"
+import interviewRouter from "./routes/intervire.route.js"
 
 dotenv.config()
 

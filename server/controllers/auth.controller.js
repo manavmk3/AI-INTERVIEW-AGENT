@@ -23,7 +23,7 @@ export const googleAuth = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        return res.status(500).json({ message: 'Google authentication error ${error}' })
+        return res.status(500).json({ message: `Google authentication error ${error}` })
     }
 }
 
@@ -34,6 +34,6 @@ export const logOut = async (req, res) => {
     }
     catch (error) {
         console.log(error)
-        return res.status(500).json({ message: 'Logout error ${error}' })
+        return res.status(500).json({ message: `Logout error ${error}` })
     }
 }
