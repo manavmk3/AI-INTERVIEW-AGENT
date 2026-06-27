@@ -65,8 +65,10 @@ function Step1Setup({ onStart }) {
 
         }
         catch (error) {
-            console.log(error)
-            setLoading(false)
+            console.error("Error generating questions:", error);
+            const message = error.response?.data?.message || "Failed to start the interview. Please try again.";
+            alert(message);
+            setLoading(false);
         }
     }
 
